@@ -920,4 +920,51 @@ th {
   .modal-overlay {
     max-width: calc(100% - 12px);
   }
+
+  .categories-table {
+    min-width: 0;
+  }
+
+  .categories-table thead {
+    display: none;
+  }
+
+  .categories-table,
+  .categories-table tbody,
+  .categories-table tr,
+  .categories-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .categories-table tr {
+    padding: 8px 0;
+    border-bottom: 1px solid #e2ebf4;
+  }
+
+  .categories-table td {
+    border-bottom: none;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .categories-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--ink-700);
+  }
+
+  .categories-table .row-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .categories-table .row-actions .btn {
+    width: 100%;
+  }
 }
