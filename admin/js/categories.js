@@ -17,10 +17,10 @@ async function loadCategories() {
     .map((category) => {
       return `
       <tr>
-        <td>${category.id}</td>
-        <td>${category.name}</td>
-        <td>${category.is_active ? "Yes" : "No"}</td>
-        <td>
+        <td data-label="ID">${category.id}</td>
+        <td data-label="Name">${category.name}</td>
+        <td data-label="Active">${category.is_active ? "Yes" : "No"}</td>
+        <td data-label="Actions">
           <div class="row-actions">
             <button type="button" class="btn btn-outline" onclick='editCategory(${JSON.stringify(category).replaceAll("'", "&#39;")})'>Edit</button>
             <button type="button" class="btn btn-danger" onclick="deleteCategory(${category.id})">Delete</button>
