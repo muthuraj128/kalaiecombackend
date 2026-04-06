@@ -12,6 +12,10 @@ const publicRoutes = require("./routes/publicRoutes");
 
 const app = express();
 
+function firstExistingPath(candidates) {
+  return candidates.find((candidate) => fs.existsSync(candidate)) || null;
+}
+
 app.use(
   cors({
     origin: true,
@@ -34,8 +38,15 @@ app.use("/api/admin/products", productsRoutes);
 app.use("/api/admin/coupons", couponsRoutes);
 app.use("/api/admin/categories", categoriesRoutes);
 
-const adminPath = path.join(__dirname, "..", "..", "admin");
-if (fs.existsSync(adminPath)) {
+const projectRootPath = path.join(__dirname, "..");
+const repoRootPath = path.join(__dirname, "..", "..");
+
+const adminPath = firstExistingPath([
+  path.join(projectRootPath, "admin"),
+  path.join(repoRootPath, "admin")
+]);
+
+if (adminPath) {
   app.use("/admin", express.static(adminPath));
 } else {
   app.get("/admin", (_req, res) => {
@@ -43,15 +54,17 @@ if (fs.existsSync(adminPath)) {
   });
 }
 
-const storefrontPath = path.join(__dirname, "..", "..");
-const storefrontIndexPath = path.join(storefrontPath, "index.html");
+const storefrontIndexPath = firstExistingPath([
+  path.join(projectRootPath, "index.html"),
+  path.join(repoRootPath, "index.html")
+]);
 
-if (fs.existsSync(storefrontIndexPath)) {
-  app.use(express.static(storefrontPath));
+if (storefrontIndexPath) {
+  app.use(express.static(path.dirname(storefrontIndexPath)));
 }
 
 app.get("/", (_req, res) => {
-  if (fs.existsSync(storefrontIndexPath)) {
+  if (storefrontIndexPath) {
     return res.sendFile(storefrontIndexPath);
   }
 
